@@ -1,0 +1,1678 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "//anaconda/lib/python2.7/site-packages/sklearn/utils/deprecation.py:77: DeprecationWarning: Function fetch_mldata is deprecated; fetch_mldata was deprecated in version 0.20 and will be removed in version 0.22\n",
+      "  warnings.warn(msg, category=DeprecationWarning)\n",
+      "//anaconda/lib/python2.7/site-packages/sklearn/utils/deprecation.py:77: DeprecationWarning: Function mldata_filename is deprecated; mldata_filename was deprecated in version 0.20 and will be removed in version 0.22\n",
+      "  warnings.warn(msg, category=DeprecationWarning)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "{'COL_NAMES': ['label', 'data'],\n",
+       " 'DESCR': 'mldata.org dataset: mnist-original',\n",
+       " 'data': array([[0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        ...,\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0],\n",
+       "        [0, 0, 0, ..., 0, 0, 0]], dtype=uint8),\n",
+       " 'target': array([0., 0., 0., ..., 9., 9., 9.])}"
+      ]
+     },
+     "execution_count": 1,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.datasets import fetch_mldata\n",
+    "mnist=fetch_mldata('MNIST original')\n",
+    "mnist"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import matplotlib\n",
+    "import matplotlib.pyplot as plt\n",
+    "%matplotlib inline"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 3,
+   "metadata": {
+    "collapsed": false
+   },
+=======
+   "execution_count": 5,
+   "metadata": {},
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+   "outputs": [],
+   "source": [
+    "X,y=mnist['data'],mnist['target']"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 4,
+   "metadata": {
+    "collapsed": false
+   },
+=======
+   "execution_count": 11,
+   "metadata": {},
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAP8AAAD8CAYAAAC4nHJkAAAABHNCSVQICAgIfAhkiAAAAAlwSFlz\nAAALEgAACxIB0t1+/AAABj5JREFUeJzt3a9rlf8fxvEzGQZZGLo0hA3BWQzivzHEpha1mRRhGkyW\nFUG0WQXFpEFENC6IQWxD0xB/40A4gpyyoJ5P+ZZvuF/3PGdnc+d6POrlvfuAPrnD2/tsot/vd4A8\ne3b6AwA7Q/wQSvwQSvwQSvwQSvwQSvwQSvwQSvwQanKb7+e/E8LoTWzmD3nyQyjxQyjxQyjxQyjx\nQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjx\nQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQyjxQ6jJnf4AMKiHDx+W+5s3\nbxq3+/fvb/XH+T+fPn0a6c/fCp78EEr8EEr8EEr8EEr8EEr8EEr8EMo5PyPV6/Uat5cvX5bXLi8v\nl/urV6/KfWJiotzTefJDKPFDKPFDKPFDKPFDKPFDKEd9Y+7Xr1/lvr6+PtTPbzuO+/DhQ+O2srIy\n1L1HaWZmptzPnDmzTZ9kdDz5IZT4IZT4IZT4IZT4IZT4IZT4IZRz/jHXdo4/Pz9f7v1+v9z/5ddm\njx071ridPXu2vHZxcbHcDx8+PNBn+pd48kMo8UMo8UMo8UMo8UMo8UMo8UMo5/xj7urVq+Xedo7f\ntreZnZ1t3C5cuFBee/369aHuTc2TH0KJH0KJH0KJH0KJH0KJH0KJH0I55x8Dd+/ebdyeP39eXjvs\n+/ht13e73cat7XcKrK2tlfvCwkK5U/Pkh1Dih1Dih1Dih1Dih1Dih1Dih1ATw76v/Ze29WbjojrH\n73Q6naWlpcat1+sNde+d/N7+ubm5cn///v3I7r3LbeovxZMfQokfQokfQokfQokfQokfQjnq2wXa\njry+fv068M+enp4u96mpqXLfs6d+fmxsbDRu379/L69t8/v376GuH2OO+oBm4odQ4odQ4odQ4odQ\n4odQ4odQvrp7Fzh58mS537lzp3E7f/58ee3FixfL/fjx4+XeZn19vXFbXFwsr11dXR3q3tQ8+SGU\n+CGU+CGU+CGU+CGU+CGU+CGU9/kZqW/fvjVuw57z//nzZ6DPFMD7/EAz8UMo8UMo8UMo8UMo8UMo\n8UMo7/P/z5cvX8p93759jduBAwe2+uOMjeqsvu3Xe7ftT548Kfe270FI58kPocQPocQPocQPocQP\nocQPocQPoWLO+W/cuFHu9+7dK/e9e/c2bocOHSqvffz4cbnvZt1ut9yvXbvWuL19+7a8dn5+fpCP\nxCZ58kMo8UMo8UMo8UMo8UMo8UOomKO+169fl/va2trAP/vz58/lfuXKlXK/devWwPcetbZXnZ89\ne1bu1XHe5GT9z+/o0aPl7pXd4XjyQyjxQyjxQyjxQyjxQyjxQyjxQ6iYc/5Rmp6eLvd/+Ry/zeXL\nl8u97euzK7OzsyP72bTz5IdQ4odQ4odQ4odQ4odQ4odQ4odQMef8bV8DPTU1Ve69Xq9xO3HixCAf\naVucPn263B89elTu/X6/3Nt+jXbl5s2bA1/L8Dz5IZT4IZT4IZT4IZT4IZT4IZT4IVTMOf/t27fL\n/d27d+VefT/9xsZGeW3bWXqb5eXlcv/582fj9uPHj/LatnP6I0eOlPu5c+cG3vfv319ey2h58kMo\n8UMo8UMo8UMo8UMo8UOoibZXNrfYtt7sb6ysrJT70tJS41a97tvpdDofP34s91G+NruwsFDuMzMz\n5f7gwYNyn5ub++vPxMht6h+MJz+EEj+EEj+EEj+EEj+EEj+EEj+Ecs6/Sd1ut3Fre212dXW13F+8\neFHuT58+LfdLly41bqdOnSqvPXjwYLmzKznnB5qJH0KJH0KJH0KJH0KJH0KJH0I554fx45wfaCZ+\nCCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+\nCCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CCV+CDW5zfeb\n2Ob7AQ08+SGU+CGU+CGU+CGU+CGU+CGU+CGU+CGU+CGU+CGU+CGU+CGU+CGU+CGU+CGU+CGU+CGU\n+CGU+CGU+CGU+CGU+CGU+CHUf5Zt+b+OQHReAAAAAElFTkSuQmCC\n",
+      "text/plain": [
+       "<matplotlib.figure.Figure at 0x119452150>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "5.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "plt.imshow(X[36000].reshape(-1,28),cmap=matplotlib.cm.binary,interpolation='nearest')\n",
+    "plt.axis('off')\n",
+    "plt.show()\n",
+    "print(y[36000])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "X_train,X_test,y_train,y_test=X[:60000],X[60000:],y[:60000],y[60000:]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "index = np.random.permutation(60000)\n",
+    "X_train,y_train=X_train[index],y_train[index]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "y_train_5=y_train==5\n",
+    "y_test_5=y_test==5"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 8,
+   "metadata": {
+    "collapsed": false
+   },
+=======
+   "execution_count": 18,
+   "metadata": {},
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "//anaconda/lib/python2.7/site-packages/sklearn/linear_model/stochastic_gradient.py:144: FutureWarning: max_iter and tol parameters have been added in SGDClassifier in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  FutureWarning)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "SGDClassifier(alpha=0.0001, average=False, class_weight=None,\n",
+       "       early_stopping=False, epsilon=0.1, eta0=0.0, fit_intercept=True,\n",
+       "       l1_ratio=0.15, learning_rate='optimal', loss='hinge', max_iter=None,\n",
+       "       n_iter=None, n_iter_no_change=5, n_jobs=None, penalty='l2',\n",
+       "       power_t=0.5, random_state=42, shuffle=True, tol=None,\n",
+       "       validation_fraction=0.1, verbose=0, warm_start=False)"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.linear_model import SGDClassifier\n",
+    "sgdC=SGDClassifier(random_state=42)\n",
+    "sgdC.fit(X_train,y_train_5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "predict_train_y=sgdC.predict(X_train)\n",
+    "predict_test_y=sgdC.predict(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 10,
+   "metadata": {
+    "collapsed": false
+   },
+=======
+   "execution_count": 20,
+   "metadata": {},
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[54153   426]\n",
+      " [ 1408  4013]]\n",
+      "[[9042   66]\n",
+      " [ 223  669]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.metrics import confusion_matrix\n",
+    "print(confusion_matrix(y_train_5,predict_train_y))\n",
+    "print(confusion_matrix(y_test_5,predict_test_y))"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 11,
+   "metadata": {
+    "collapsed": false
+   },
+=======
+   "execution_count": 25,
+   "metadata": {},
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([False])"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sgdC.predict(X[36000].reshape(1,-1))"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 12,
+   "metadata": {
+    "collapsed": false
+   },
+=======
+   "execution_count": 27,
+   "metadata": {},
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.9655\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.96335\n"
+     ]
+    },
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n"
+     ]
+    },
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.9606\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.model_selection import StratifiedKFold\n",
+    "from sklearn.base import clone\n",
+    "skf=StratifiedKFold(n_splits=3,random_state=42)\n",
+    "for train_index, test_index in skf.split(X_train,y_train_5):\n",
+    "    model_clone = clone(sgdC)\n",
+    "    X_train_skf = X_train[train_index]\n",
+    "    y_train_skf = y_train_5[train_index]\n",
+    "    X_test_skf=X_train[test_index]\n",
+    "    y_test_skf=y_train_5[test_index]\n",
+    "    model_clone.fit(X_train_skf,y_train_skf)\n",
+    "    predict_results = model_clone.predict(X_test_skf)\n",
+    "    print(sum(y_test_skf==predict_results)/len(y_test_skf))\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 13,
+   "metadata": {
+    "collapsed": false
+   },
+=======
+   "execution_count": 29,
+   "metadata": {},
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "array([0.96816932, 0.96866667, 0.96208333, 0.963     , 0.95607967])"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.model_selection import cross_val_score\n",
+    "\n",
+    "cross_val_score(sgdC,X_train,y_train_5,cv=5,scoring='accuracy')"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 14,
+   "metadata": {
+    "collapsed": false
+   },
+=======
+   "execution_count": 31,
+   "metadata": {},
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.model_selection import cross_val_predict\n",
+    "predicts= cross_val_predict(sgdC,X_train,y_train_5,cv=3);"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 15,
+   "metadata": {
+    "collapsed": false
+   },
+=======
+   "execution_count": 33,
+   "metadata": {},
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(60000,)"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "predicts.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 16,
+   "metadata": {
+    "collapsed": false
+   },
+=======
+   "execution_count": 36,
+   "metadata": {},
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[53689,   890],\n",
+       "       [ 1321,  4100]])"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "confusion_matrix(y_train_5,predicts)"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 17,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+=======
+   "execution_count": 37,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "confusion_matrix?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([189720.88583995])"
+      ]
+     },
+     "execution_count": 38,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+   "source": [
+    "threshold=sgdC.decision_function([X[36000]])"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 18,
+   "metadata": {
+    "collapsed": false
+   },
+=======
+   "execution_count": 54,
+   "metadata": {},
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n"
+     ]
+    }
+   ],
+   "source": [
+    "y_score=cross_val_predict(sgdC,X_train,y_train_5,cv=3,method='decision_function');"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.metrics import precision_recall_curve"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "precisions,recalls,threshold = precision_recall_curve(y_train_5,y_score)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "def plot_precision_recall_vs_threshold(precisions,recalls,threshold):\n",
+    "    plt.plot(threshold,precisions[:-1],'--b',label='precision')\n",
+    "    plt.plot(threshold,recalls[:-1],'g-',label='recall')\n",
+    "    plt.xlabel('Threshold')\n",
+    "    plt.ylim([0,1])\n",
+    "    plt.legend(loc='upper left')\n",
+    "    plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 22,
+   "metadata": {
+    "collapsed": false
+   },
+=======
+   "execution_count": 57,
+   "metadata": {},
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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4MwZOz57wQeFKFUUTfZKeVF4cDizx86mZlhNrn7/anYf3+3V7cfHw4oVdnrdOq9uWgU4TfZKeVmdiDosvXkpJzNOMvLdkWRkZ3ht2x062BEat22DOnW8tllVBWiyV8oHejXpxXvj3iMxJZEJiyaQmpl6wdtcvNg+Zm/oUJv0lSoLTfZ+sGfPHjp5noywfPlyRleGB12qCza6zWievfxZPt7xMU+vePqCtmWMHX/9oYfOP/dVqbLQZF8MYwzu3CclK1UOjw54lOs6XMeM9TP46fhP5d7OypX2vXNnCK7Qg5yoikqTfQF79uyhbdu2TJo0iU6dOjF37lz69etHjx49GD9+PGfOnAFg/fr19O/fn65du9K7d29Onz7Nnj17GDRoED169KBHjx4ljmGvqoY/DfkTQRLEg189WO5tDBli3+fO9U5MquqpsMcI9395P5sOl32gseJ0a9SNf4z4R4n1du7cyZw5c2jVqhXXXnst33zzDZGRkTz77LO8+OKLPP7440yYMIH58+fTq1cvTp06RUREBA0aNODrr78mPDycnTt3MnHiRAreJayqng71O/BA3wd4euXTxP0cR+xFZbv5cf16+z5mDDRv7oMAVZVQYZO9k5o3b07fvn357LPPiI+PPzfccWZmJv369WPHjh00btyYXr3sbfE1atQAIDU1lXvuuYdNmzbhcrlITEx0bB9UxfJgvwd5bf1rPPntk3x1S9keeFqvHjRrBq+/7qPgVJVQYZN9aY7AfSV3KGNjDMOGDeO9997LV75ly5ZC13vppZdo2LAhmzdvxu12E67PgVMeNcNr8tiAx3jsm8dYmrSU4a2Gl3rdmBjYu9eHwakqQfvsi9G3b1++//57kpLsaIapqakkJibStm1bDh06xHrP9+vTp0+TnZ3NyZMnady4MUFBQcydO7dcz6pVgWta72k0r9mcu5fcTWZOZqnWWbAA3nwT9DoBdaE02Rejfv36vP3220ycOJEuXbrQr18/EhISCA0NZf78+UybNo2uXbsybNgw0tPTufvuu5kzZw5du3YlISHh3DcEpQAiQiL456h/svv4bl753ysl1ne74Q9/gH//Wx9Ioi6cDnEcYPRnWLEZYxg1bxTf7/+eIw8fITy46K6+r7+GK66Ad96Bm27yY5CqQtMhjpWqBESEe/vcy6mMUyxNWlps3X/+056cve46PwWn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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plot_precision_recall_vs_threshold(precisions,recalls,threshold)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.metrics import roc_curve,roc_auc_score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "fpr,tpr,threshold=roc_curve(y_train_5,y_score)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "def plot_roc(fpr,tpr,label=None):\n",
+    "    plt.plot(fpr,tpr,linewidth=2,label=label)\n",
+    "    plt.plot([0,1],[0,1],'k--')\n",
+    "    plt.axis([0,1,0,1])\n",
+    "    plt.xlabel('False Positive Rate')\n",
+    "    plt.ylabel('True Positive Rate')\n",
+    "plot_roc(fpr,tpr)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.9615592897486045"
+      ]
+     },
+     "execution_count": 33,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "roc_auc_score(y_train_5,y_score)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.ensemble import RandomForestClassifier"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "rfClassifier = RandomForestClassifier()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',\n",
+       "            max_depth=None, max_features='auto', max_leaf_nodes=None,\n",
+       "            min_impurity_decrease=0.0, min_impurity_split=None,\n",
+       "            min_samples_leaf=1, min_samples_split=2,\n",
+       "            min_weight_fraction_leaf=0.0, n_estimators=10, n_jobs=1,\n",
+       "            oob_score=False, random_state=None, verbose=0,\n",
+       "            warm_start=False)"
+      ]
+     },
+     "execution_count": 36,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "rfClassifier.fit(X_train,y_train_5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "y_score_rf=cross_val_predict(rfClassifier,X_train,y_train_5,cv=3,method='predict_proba');"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "y_pos_score_forest=y_score_rf[:,1]\n",
+    "precision_rf, recall_rf, threshold_rf = precision_recall_curve(y_train_5,y_pos_score_forest)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plot_precision_recall_vs_threshold(precision_rf,recall_rf,threshold_rf)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "fpr_rf,tpr_rf,threshold_rf = roc_curve(y_train_5,y_pos_score_forest)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 46,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "plt.plot(fpr,tpr,label='SGD')\n",
+    "plot_roc(fpr_rf,tpr_rf,'RF')\n",
+    "plt.legend()\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "array([5.])"
+      ]
+     },
+     "execution_count": 48,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sgdC.fit(X_train,y_train)\n",
+    "sgdC.predict([X[36000]])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[ -25051.31681697, -290896.14472575, -440143.75822436,\n",
+       "         -47425.76940323, -423015.85918599,   -7379.64668159,\n",
+       "        -709660.46497747, -249237.1049068 , -686309.79264591,\n",
+       "        -641652.67172584]])"
+      ]
+     },
+     "execution_count": 49,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sgdC.decision_function([X[36000]])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0., 1., 2., 3., 4., 5., 6., 7., 8., 9.])"
+      ]
+     },
+     "execution_count": 50,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sgdC.classes_"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.multiclass import OneVsOneClassifier\n",
+    "ovo = OneVsOneClassifier(sgdC)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 52,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "OneVsOneClassifier(estimator=SGDClassifier(alpha=0.0001, average=False, class_weight=None, epsilon=0.1,\n",
+       "       eta0=0.0, fit_intercept=True, l1_ratio=0.15,\n",
+       "       learning_rate='optimal', loss='hinge', max_iter=None, n_iter=None,\n",
+       "       n_jobs=1, penalty='l2', power_t=0.5, random_state=42, shuffle=True,\n",
+       "       tol=None, verbose=0, warm_start=False),\n",
+       "          n_jobs=1)"
+      ]
+     },
+     "execution_count": 52,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "ovo.fit(X_train,y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 53,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([5.])"
+      ]
+     },
+     "execution_count": 53,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "ovo.predict([X[36000]])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 54,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "45"
+      ]
+     },
+     "execution_count": 54,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "len(ovo.estimators_)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 59,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[0., 0., 0., 0., 0., 1., 0., 0., 0., 0.]])"
+      ]
+     },
+     "execution_count": 59,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "rfClassifier.fit(X_train,y_train)\n",
+    "rfClassifier.predict_proba([X[36000]])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 60,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "array([0.85807838, 0.87934397, 0.87993199])"
+      ]
+     },
+     "execution_count": 60,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "cross_val_score(sgdC,X_train,y_train,cv=3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 61,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/usr/local/lib/python3.6/site-packages/sklearn/utils/validation.py:475: DataConversionWarning: Data with input dtype uint8 was converted to float64 by StandardScaler.\n",
+      "  warnings.warn(msg, DataConversionWarning)\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.preprocessing import StandardScaler\n",
+    "standardScaler = StandardScaler()\n",
+    "X_train_scale=standardScaler.fit_transform(X_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 63,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "array([0.90841832, 0.91064553, 0.90913637])"
+      ]
+     },
+     "execution_count": 63,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "cross_val_score(sgdC,X_train_scale,y_train,cv=3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 66,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n",
+      "/usr/local/lib/python3.6/site-packages/sklearn/linear_model/stochastic_gradient.py:128: FutureWarning: max_iter and tol parameters have been added in <class 'sklearn.linear_model.stochastic_gradient.SGDClassifier'> in 0.19. If both are left unset, they default to max_iter=5 and tol=None. If tol is not None, max_iter defaults to max_iter=1000. From 0.21, default max_iter will be 1000, and default tol will be 1e-3.\n",
+      "  \"and default tol will be 1e-3.\" % type(self), FutureWarning)\n"
+     ]
+    }
+   ],
+   "source": [
+    "y_train_predict=cross_val_predict(sgdC,X_train_scale,y_train,cv=3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 67,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "cm=confusion_matrix(y_train,y_train_predict)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 68,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "import seaborn as sns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 69,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.axes._subplots.AxesSubplot at 0x124b1a400>"
+      ]
+     },
+     "execution_count": 69,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 2 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "sns.heatmap(cm,linewidths=2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 73,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "row_sum=cm.sum(axis=1,keepdims=True)\n",
+    "cm_norm=cm/row_sum"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 75,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<matplotlib.axes._subplots.AxesSubplot at 0x124b22080>"
+      ]
+     },
+     "execution_count": 75,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 2 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "sns.heatmap(cm_norm,linewidths=2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 80,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 288x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "np.fill_diagonal(cm_norm,0)\n",
+    "plt.matshow(cm_norm,cmap=plt.cm.gray)\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 83,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "label_a,label_b=3,5\n",
+    "X_aa=X_train[(y_train==label_a)&(y_train_predict==label_a)]\n",
+    "X_ab=X_train[(y_train==label_a)&(y_train_predict==label_b)]\n",
+    "X_ba=X_train[(y_train==label_b)&(y_train_predict==label_a)]\n",
+    "X_bb=X_train[(y_train==label_b)&(y_train_predict==label_b)]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 84,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "y_large = y_train>7\n",
+    "y_odd=y_train%2==1\n",
+    "y_multi=np.c_[y_large,y_odd]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.neighbors import KNeighborsClassifier"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 86,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',\n",
+       "           metric_params=None, n_jobs=1, n_neighbors=5, p=2,\n",
+       "           weights='uniform')"
+      ]
+     },
+     "execution_count": 86,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "knn=KNeighborsClassifier()\n",
+    "knn.fit(X_train,y_multi)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 87,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[False,  True]])"
+      ]
+     },
+     "execution_count": 87,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "knn.predict([X[36000]])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 88,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "knn_score=cross_val_predict(knn,X_train,y_train,cv=3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 90,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.9683663291356602"
+      ]
+     },
+     "execution_count": 90,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.metrics import f1_score\n",
+    "f1_score(y_train,knn_score,average='macro')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 91,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "knn_train_multi=cross_val_predict(knn,X_train,y_multi,cv=3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 92,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.9716366928676345"
+      ]
+     },
+     "execution_count": 92,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "f1_score(y_multi,knn_train_multi,average='macro')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 95,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.19.2\n"
+     ]
+    }
+   ],
+   "source": [
+    "import sklearn\n",
+    "print(sklearn.__version__)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.982207665120935\n"
+     ]
+    }
+   ],
+   "source": [
+    "from sklearn.metrics import precision_score\n",
+    "knn=KNeighborsClassifier()\n",
+    "knn.fit(X_train,y_train)\n",
+    "y_train_predict=knn.predict(X_train)\n",
+    "print(precision_score(y_train,y_train_predict,average='macro'))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0., 0., 0., ..., 9., 9., 9.])"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "y_test"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1\n"
+     ]
+    }
+   ],
+   "source": [
+    "y_test_predict=knn.predict(X_test)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.9692753386570571\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(precision_score(y_test,y_test_predict,average='macro'))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.ensemble import RandomForestClassifier\n",
+    "rfC=RandomForestClassifier(n_estimators=200)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.model_selection import cross_val_score\n",
+    "rfC_score=cross_val_score(rfC,X_train,y_train,cv=5)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "RandomForestClassifier(bootstrap=True, class_weight=None, criterion='gini',\n",
+       "            max_depth=None, max_features='auto', max_leaf_nodes=None,\n",
+       "            min_impurity_decrease=0.0, min_impurity_split=None,\n",
+       "            min_samples_leaf=1, min_samples_split=2,\n",
+       "            min_weight_fraction_leaf=0.0, n_estimators=200, n_jobs=None,\n",
+       "            oob_score=False, random_state=None, verbose=0,\n",
+       "            warm_start=False)"
+      ]
+     },
+     "execution_count": 31,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "rfC.fit(X_train,y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.9706993611562174\n"
+     ]
+    }
+   ],
+   "source": [
+    "y_test_predict=rfC.predict(X_test)\n",
+    "print(precision_score(y_test,y_test_predict,average='macro'))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 2",
+   "language": "python",
+   "name": "python2"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 2
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+<<<<<<< HEAD
+   "pygments_lexer": "ipython2",
+   "version": "2.7.13"
+=======
+   "pygments_lexer": "ipython3",
+   "version": "3.6.4"
+>>>>>>> f47f8c31de86d292e47312e7c242efcbe4c2d5b1
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
