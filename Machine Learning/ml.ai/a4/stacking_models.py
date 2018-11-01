@@ -346,7 +346,7 @@ def get_auc_lr_valid(X, y, C=1.0, seed=17, ratio = 0.9):
 # In[15]:
 
 
-get_ipython().run_cell_magic('time', '', '# Select the training set from the united dataframe (where we have the answers)\nX_train = full_sites_sparse[:idx_split, :]\n\n# Calculate metric on the validation set\nprint(get_auc_lr_valid(X_train, y_train))')
+# get_ipython().run_cell_magic('time', '', '# Select the training set from the united dataframe (where we have the answers)\nX_train = full_sites_sparse[:idx_split, :]\n\n# Calculate metric on the validation set\nprint(get_auc_lr_valid(X_train, y_train))')
 
 
 # The first model demonstrated the quality  of 0.92 on the validation set. Let's take it as the first baseline and starting point. To make a prediction on the test data set **we need to train the model again on the entire training data set** (until this moment, our model used only part of the data for training), which will increase its generalizing ability:
