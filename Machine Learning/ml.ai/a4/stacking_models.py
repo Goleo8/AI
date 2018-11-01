@@ -352,7 +352,10 @@ def get_auc_lr_valid(X, y, C=1.0, seed=17, ratio = 0.9):
 # The first model demonstrated the quality  of 0.92 on the validation set. Let's take it as the first baseline and starting point. To make a prediction on the test data set **we need to train the model again on the entire training data set** (until this moment, our model used only part of the data for training), which will increase its generalizing ability:
 
 # In[16]:
+X_train = full_sites_sparse[:idx_split, :]
 
+# Calculate metric on the validation set
+print(get_auc_lr_valid(X_train, y_train))
 
 # Function for writing predictions to a file
 def write_to_submission_file(predicted_labels, out_file,
