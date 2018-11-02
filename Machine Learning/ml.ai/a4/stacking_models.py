@@ -563,7 +563,7 @@ print("with start month and normalised start_hour: %f"%get_auc_lr_valid(X_train_
 
 tmp_morning=StandardScaler().fit_transform(full_new_feat['morning'].reshape(-1,1))
 X_train_2=csr_matrix(hstack([full_sites_sparse[:idx_split,:], tmp[:idx_split,:],tmp_morning[:idx_split,:]]))
-print("with start month and normalised morning: %f"get_auc_lr_valid(X_train_2, y_train))
+print("with start month and normalised morning: %f"%get_auc_lr_valid(X_train_2, y_train))
 
 
 # ### 5. Regularization and Parameter Tuning
@@ -587,11 +587,11 @@ X_train = csr_matrix(hstack([full_sites_sparse[:idx_split,:],
                              tmp_scaled[:idx_split,:]]))
 
 # Capture the quality with default parameters
-print("with start month and normalised morning and hour: %f"get_auc_lr_valid(X_train, y_train))
+print("with start month and normalised morning and hour: %f"%get_auc_lr_valid(X_train, y_train))
 
-print("with start month and normalised morning and hour with rf model: %f"get_auc_rf_valid(X_train, y_train))
+print("with start month and normalised morning and hour with rf model: %f"%get_auc_rf_valid(X_train, y_train))
 
-print("with start month and normalised morning and hour with svc model: %f"get_auc_svc_valid(X_train, y_train))
+print("with start month and normalised morning and hour with svc model: %f"%get_auc_svc_valid(X_train, y_train))
 
 
 # We will try to beat this result by optimizing the regularization parameter. We will take a list of possible values of C and calculate the quality metric on the validation set for each of C-values:
