@@ -66,7 +66,7 @@ test_df[times] = test_df[times].apply(pd.to_datetime)
 train_df = train_df.sort_values(by='time1')
 
 # Look at the first rows of the training set
-train_df.head()
+print(train_df.head())
 
 
 # The training data set contains the following features:
@@ -160,7 +160,7 @@ time_df['max'] = train_df[times].max(axis=1)
 # Calculate sessions' duration in seconds
 time_df['seconds'] = (time_df['max'] - time_df['min']) / np.timedelta64(1, 's')
 
-time_df.head()
+print(time_df.head())
 
 
 # In order to perform the next task, generate descriptive statistics as you did in the first assignment.
@@ -178,7 +178,7 @@ time_df.head()
 
 
 # Your code is here
-time_df.groupby('target').describe()
+print(time_df.groupby('target').describe())
 
 
 # In order to train our first model, we need to prepare the data. First of all, exclude the target variable from the training set. Now both training and test sets have the same number of columns, therefore aggregate them into one dataframe.  Thus, all transformations will be performed simultaneously on both training and test data sets.
@@ -253,10 +253,6 @@ full_sites_sparse.shape
 
 
 # How much memory does a sparse matrix occupy?
-print('{0} elements * {1} bytes = {2} bytes'.format(full_sites_sparse.count_nonzero(), 8,
-                                                    full_sites_sparse.count_nonzero() * 8))
-# Or just like this:
-print('sparse_matrix_size = {0} bytes'.format(full_sites_sparse.data.nbytes))
 
 
 # Let us explore how the matrix with the websites has been formed using a mini example. Suppose we have the following table with user sessions:
@@ -291,21 +287,6 @@ print('sparse_matrix_size = {0} bytes'.format(full_sites_sparse.data.nbytes))
 # data, create the list of ones, length of which equal to the number of elements in the initial dataframe (9)
 # By summing the number of ones in the cell, we get the frequency,
 # number of visits to a particular site per session
-data = [1] * 9
-
-# To do this, you need to correctly distribute the ones in cells
-# Indices - website ids, i.e. columns of a new matrix. We will sum ones up grouping them by sessions (ids)
-indices = [1, 0, 0, 1, 3, 1, 2, 3, 4]
-
-# Indices for the division into rows (sessions)
-# For example, line 0 is the elements between the indices [0; 3) - the rightmost value is not included
-# Line 1 is the elements between the indices [3; 6)
-# Line 2 is the elements between the indices [6; 9)
-indptr = [0, 3, 6, 9]
-
-# Aggregate these three variables into a tuple and compose a matrix
-# To display this matrix on the screen transform it into the usual "dense" matrix
-csr_matrix((data, indices, indptr)).todense()
 
 
 # As you might have noticed, there are not four columns in the resulting matrix (corresponding to number of different websites) but five. A zero column has been added, which indicates if the session was shorter (in our mini example we took sessions of three). This column is excessive and should be removed from the dataframe (do that yourself).
@@ -343,6 +324,32 @@ def get_auc_lr_valid(X, y, C=1.0, seed=17, ratio = 0.9):
     return score
 
 
+from sklearn.ensemble import RandomForestClassifier
+def get_auc_rf_valid(X, y, C=1.0, seed=17, ratio = 0.9):
+    # Split the data into the training and validation sets
+    idx = int(round(X.shape[0] * ratio))
+    # Classifier training
+    rf = RandomForestClassifier(n_estimators=200).fit(X[:idx, :], y[:idx])
+    # Prediction for validation set
+    y_pred = rf.predict_proba(X[idx:, :])[:, 1]
+    # Calculate the quality
+    score = roc_auc_score(y[idx:], y_pred)
+
+    return score
+
+from sklearn.svm import SVC
+def get_auc_svc_valid(X, y, C=1.0, seed=17, ratio = 0.9):
+    # Split the data into the training and validation sets
+    idx = int(round(X.shape[0] * ratio))
+    # Classifier training
+    svc_model = SVC(probability=True).fit(X[:idx, :], y[:idx])
+    # Prediction for validation set
+    y_pred = svc_model.predict_proba(X[idx:, :])[:, 1]
+    # Calculate the quality
+    score = roc_auc_score(y[idx:], y_pred)
+
+    return score
+
 # In[15]:
 
 
@@ -355,7 +362,7 @@ def get_auc_lr_valid(X, y, C=1.0, seed=17, ratio = 0.9):
 X_train = full_sites_sparse[:idx_split, :]
 
 # Calculate metric on the validation set
-print(get_auc_lr_valid(X_train, y_train))
+print("raw result auc: %f"%get_auc_lr_valid(X_train, y_train))
 
 # Function for writing predictions to a file
 def write_to_submission_file(predicted_labels, out_file,
@@ -452,7 +459,7 @@ tmp = full_new_feat[['start_month']].values
 X_train = csr_matrix(hstack([full_sites_sparse[:idx_split,:], tmp[:idx_split,:]]))
 
 # Compute the metric on the validation set
-print(get_auc_lr_valid(X_train, y_train))
+print("with start month auc: %f"%get_auc_lr_valid(X_train, y_train))
 
 
 # The quality of the model has decreased significantly. We added a feature that definitely seemed useful to us, but its usage only worsened the model. Why did it happen?
@@ -483,7 +490,7 @@ tmp = StandardScaler().fit_transform(full_new_feat[['start_month']])
 X_train = csr_matrix(hstack([full_sites_sparse[:idx_split,:], tmp[:idx_split,:]]))
 
 # Compute metric on the validation set
-print(get_auc_lr_valid(X_train, y_train))
+print("with start month and normalised auc: %f"%get_auc_lr_valid(X_train, y_train))
 
 
 # ##### 4.7. Add to the training set a new feature "n_unique_sites" – the number of the unique web-sites in a session. Calculate how the quality on the validation set has changed
@@ -509,7 +516,7 @@ n_unique_sites=full_sites[sites].nunique(axis=1)
 
 tmp_n_unique_sites=StandardScaler().fit_transform(n_unique_sites.reshape(-1,1))
 X_train=csr_matrix(hstack([full_sites_sparse[:idx_split,:], tmp[:idx_split,:],tmp_n_unique_sites[:idx_split,:]]))
-print(get_auc_lr_valid(X_train, y_train))
+print("with start month and normalised and unique sites auc: %f"%get_auc_lr_valid(X_train, y_train))
 
 
 # So, the new feature has slightly decreased the quality, so we will not use it. Nevertheless, do not rush to throw features out because they haven't performed well. They can be useful in a combination with other features (for example, when a new feature is a ratio or a product of two others).
@@ -546,17 +553,17 @@ full_new_feat['morning']=full_new_feat['start_hour'].map(lambda x:x<=11)
 # In[58]:
 
 
-tmp_hour=StandardScaler().fit_transform(full_df['start_hour'].reshape(-1,1))
+tmp_hour=StandardScaler().fit_transform(full_new_feat['start_hour'].reshape(-1,1))
 X_train_1=csr_matrix(hstack([full_sites_sparse[:idx_split,:], tmp[:idx_split,:],tmp_hour[:idx_split,:]]))
-print(get_auc_lr_valid(X_train_1, y_train))
+print("with start month and normalised start_hour: %f"%get_auc_lr_valid(X_train_1, y_train))
 
 
 # In[59]:
 
 
-tmp_morning=StandardScaler().fit_transform(full_df['morning'].reshape(-1,1))
+tmp_morning=StandardScaler().fit_transform(full_new_feat['morning'].reshape(-1,1))
 X_train_2=csr_matrix(hstack([full_sites_sparse[:idx_split,:], tmp[:idx_split,:],tmp_morning[:idx_split,:]]))
-print(get_auc_lr_valid(X_train_2, y_train))
+print("with start month and normalised morning: %f"get_auc_lr_valid(X_train_2, y_train))
 
 
 # ### 5. Regularization and Parameter Tuning
@@ -580,21 +587,11 @@ X_train = csr_matrix(hstack([full_sites_sparse[:idx_split,:],
                              tmp_scaled[:idx_split,:]]))
 
 # Capture the quality with default parameters
-score_C_1 = get_auc_lr_valid(X_train, y_train)
-print(score_C_1)
+print("with start month and normalised morning and hour: %f"get_auc_lr_valid(X_train, y_train))
 
+print("with start month and normalised morning and hour with rf model: %f"get_auc_rf_valid(X_train, y_train))
 
-# In[109]:
-
-
-# Capture the quality with default parameters
-score_C_rf = get_auc_rf_valid(X_train, y_train)
-
-
-# In[112]:
-
-
-print(score_C_rf)
+print("with start month and normalised morning and hour with svc model: %f"get_auc_svc_valid(X_train, y_train))
 
 
 # We will try to beat this result by optimizing the regularization parameter. We will take a list of possible values of C and calculate the quality metric on the validation set for each of C-values:
@@ -809,19 +806,7 @@ write_to_submission_file(y_test, 'baseline_5.csv')
 #
 # # In[107]:
 #
-#
-# from sklearn.ensemble import RandomForestClassifier
-# def get_auc_rf_valid(X, y, C=1.0, seed=17, ratio = 0.9):
-#     # Split the data into the training and validation sets
-#     idx = int(round(X.shape[0] * ratio))
-#     # Classifier training
-#     rf = RandomForestClassifier(n_estimators=200).fit(X[:idx, :], y[:idx])
-#     # Prediction for validation set
-#     y_pred = rf.predict_proba(X[idx:, :])[:, 1]
-#     # Calculate the quality
-#     score = roc_auc_score(y[idx:], y_pred)
-#
-#     return score
+
 #
 #
 # # In[108]:
