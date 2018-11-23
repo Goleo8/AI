@@ -362,7 +362,7 @@ def get_auc_svc_valid(X, y, C=1.0, seed=17, ratio = 0.9):
 X_train = full_sites_sparse[:idx_split, :]
 
 # Calculate metric on the validation set
-print("raw result auc: %f"%get_auc_lr_valid(X_train, y_train))
+# print("raw result auc: %f"%get_auc_lr_valid(X_train, y_train))
 
 # Function for writing predictions to a file
 def write_to_submission_file(predicted_labels, out_file,
@@ -459,7 +459,7 @@ tmp = full_new_feat[['start_month']].values
 X_train = csr_matrix(hstack([full_sites_sparse[:idx_split,:], tmp[:idx_split,:]]))
 
 # Compute the metric on the validation set
-print("with start month auc: %f"%get_auc_lr_valid(X_train, y_train))
+# print("with start month auc: %f"%get_auc_lr_valid(X_train, y_train))
 
 
 # The quality of the model has decreased significantly. We added a feature that definitely seemed useful to us, but its usage only worsened the model. Why did it happen?
@@ -490,7 +490,7 @@ tmp = StandardScaler().fit_transform(full_new_feat[['start_month']])
 X_train = csr_matrix(hstack([full_sites_sparse[:idx_split,:], tmp[:idx_split,:]]))
 
 # Compute metric on the validation set
-print("with start month and normalised auc: %f"%get_auc_lr_valid(X_train, y_train))
+# print("with start month and normalised auc: %f"%get_auc_lr_valid(X_train, y_train))
 
 
 # ##### 4.7. Add to the training set a new feature "n_unique_sites" – the number of the unique web-sites in a session. Calculate how the quality on the validation set has changed
@@ -516,7 +516,7 @@ n_unique_sites=full_sites[sites].nunique(axis=1)
 
 tmp_n_unique_sites=StandardScaler().fit_transform(n_unique_sites.reshape(-1,1))
 X_train=csr_matrix(hstack([full_sites_sparse[:idx_split,:], tmp[:idx_split,:],tmp_n_unique_sites[:idx_split,:]]))
-print("with start month and normalised and unique sites auc: %f"%get_auc_lr_valid(X_train, y_train))
+# print("with start month and normalised and unique sites auc: %f"%get_auc_lr_valid(X_train, y_train))
 
 
 # So, the new feature has slightly decreased the quality, so we will not use it. Nevertheless, do not rush to throw features out because they haven't performed well. They can be useful in a combination with other features (for example, when a new feature is a ratio or a product of two others).
@@ -555,7 +555,7 @@ full_new_feat['morning']=full_new_feat['start_hour'].map(lambda x:x<=11)
 
 tmp_hour=StandardScaler().fit_transform(full_new_feat['start_hour'].reshape(-1,1))
 X_train_1=csr_matrix(hstack([full_sites_sparse[:idx_split,:], tmp[:idx_split,:],tmp_hour[:idx_split,:]]))
-print("with start month and normalised start_hour: %f"%get_auc_lr_valid(X_train_1, y_train))
+# print("with start month and normalised start_hour: %f"%get_auc_lr_valid(X_train_1, y_train))
 
 
 # In[59]:
@@ -563,7 +563,7 @@ print("with start month and normalised start_hour: %f"%get_auc_lr_valid(X_train_
 
 tmp_morning=StandardScaler().fit_transform(full_new_feat['morning'].reshape(-1,1))
 X_train_2=csr_matrix(hstack([full_sites_sparse[:idx_split,:], tmp[:idx_split,:],tmp_morning[:idx_split,:]]))
-print("with start month and normalised morning: %f"%get_auc_lr_valid(X_train_2, y_train))
+# print("with start month and normalised morning: %f"%get_auc_lr_valid(X_train_2, y_train))
 
 
 # ### 5. Regularization and Parameter Tuning
@@ -587,25 +587,25 @@ X_train = csr_matrix(hstack([full_sites_sparse[:idx_split,:],
                              tmp_scaled[:idx_split,:]]))
 
 # Capture the quality with default parameters
-print("with start month and normalised morning and hour: %f"%get_auc_lr_valid(X_train, y_train))
-
-print("with start month and normalised morning and hour with rf model: %f"%get_auc_rf_valid(X_train, y_train))
-
-print("with start month and normalised morning and hour with svc model: %f"%get_auc_svc_valid(X_train, y_train))
+# print("with start month and normalised morning and hour: %f"%get_auc_lr_valid(X_train, y_train))
+#
+# print("with start month and normalised morning and hour with rf model: %f"%get_auc_rf_valid(X_train, y_train))
+#
+# print("with start month and normalised morning and hour with svc model: %f"%get_auc_svc_valid(X_train, y_train))
 
 
 # We will try to beat this result by optimizing the regularization parameter. We will take a list of possible values of C and calculate the quality metric on the validation set for each of C-values:
 
 # In[64]:
 
-
-from tqdm import tqdm
-
-# List of possible C-values
-Cs = np.logspace(-3, 1, 10)
-scores = []
-for C in tqdm(Cs):
-    scores.append(get_auc_lr_valid(X_train, y_train, C=C))
+#
+# from tqdm import tqdm
+#
+# # List of possible C-values
+# Cs = np.logspace(-3, 1, 10)
+# scores = []
+# for C in tqdm(Cs):
+#     scores.append(get_auc_lr_valid(X_train, y_train, C=C))
 
 
 # Plot the graph of the quality metric (AUC-ROC) versus the value of the regularization parameter. The value of quality metric corresponding to the default value of C=1 is represented by a horizontal dotted line:
@@ -613,14 +613,14 @@ for C in tqdm(Cs):
 # In[65]:
 
 
-plt.plot(Cs, scores, 'ro-')
-plt.xscale('log')
-plt.xlabel('C')
-plt.ylabel('AUC-ROC')
-plt.title('Regularization Parameter Tuning')
-# horizontal line -- model quality with default C value
-plt.axhline(y=score_C_1, linewidth=.5, color='b', linestyle='dashed')
-plt.show()
+# plt.plot(Cs, scores, 'ro-')
+# plt.xscale('log')
+# plt.xlabel('C')
+# plt.ylabel('AUC-ROC')
+# plt.title('Regularization Parameter Tuning')
+# # horizontal line -- model quality with default C value
+# plt.axhline(y=score_C_1, linewidth=.5, color='b', linestyle='dashed')
+# plt.show()
 
 
 # ##### 4.9. What is the value of parameter C (if rounded to 2 decimals) that corresponds to the highest model quality?
@@ -636,7 +636,7 @@ plt.show()
 
 
 
-tmp_Cs=sorted(zip(scores,Cs),reverse=True)
+# tmp_Cs=sorted(zip(scores,Cs),reverse=True)
 
 
 # For the last task in this assignment: train the model using the optimal regularization parameter you found (do not round up to two digits like in the last question). If you do everything correctly and submit your solution, you should see `ROC AUC = 0.92784` on the public leaderboard ("A4 baseline 2"):
@@ -645,17 +645,64 @@ tmp_Cs=sorted(zip(scores,Cs),reverse=True)
 
 
 # Prepare the training and test data
-from sklearn.svm import SVC
-tmp_scaled = StandardScaler().fit_transform(full_new_feat[['start_month', 'start_hour',
-                                                           'morning']])
-X_train = csr_matrix(hstack([full_sites_sparse[:idx_split,:],
-                             tmp_scaled[:idx_split,:]]))
-X_test = csr_matrix(hstack([full_sites_sparse[idx_split:,:],
-                            tmp_scaled[idx_split:,:]]))
+# from sklearn.svm import SVC
+# tmp_scaled = StandardScaler().fit_transform(full_new_feat[['start_month', 'start_hour',
+#                                                            'morning']])
+# X_train = csr_matrix(hstack([full_sites_sparse[:idx_split,:],
+#                              tmp_scaled[:idx_split,:]]))
+# X_test = csr_matrix(hstack([full_sites_sparse[idx_split:,:],
+#                             tmp_scaled[idx_split:,:]]))
 
 # Train the model on the whole training data set using optimal regularization parameter
 # lr = LogisticRegression(C=tmp_Cs[0][1], random_state=17, solver='liblinear').fit(X_train, y_train)
 # rf = RandomForestClassifier(n_estimators=200).fit(X_train,y_train)
+
+
+
+# In[ ]:
+from sklearn.linear_model import ElasticNet, Lasso,  BayesianRidge, LassoLarsIC
+from sklearn.ensemble import RandomForestRegressor,  GradientBoostingRegressor
+from sklearn.kernel_ridge import KernelRidge
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import RobustScaler
+from sklearn.base import BaseEstimator, TransformerMixin, RegressorMixin, clone
+from sklearn.model_selection import KFold, cross_val_score, train_test_split
+from sklearn.metrics import mean_squared_error
+import xgboost as xgb
+import lightgbm as lgb
+#
+class AveragingModels(BaseEstimator, RegressorMixin, TransformerMixin):
+    def __init__(self, models):
+        self.models = models
+
+    # we define clones of the original models to fit the data in
+    def fit(self, X, y):
+        self.models_ = [clone(x) for x in self.models]
+
+        # Train cloned base models
+        for model in self.models_:
+            model.fit(X, y)
+
+        return self
+
+    #Now we do the predictions for cloned models and average them
+    def predict(self, X):
+        predictions = np.column_stack([
+            model.predict(X) for model in self.models_
+        ])
+        prob=np.column_stack([
+            model.predict_proba(X)
+        ])
+        return predictions[np.ceil(prob.argmax(axis=0)/2)]
+
+    def predict_proba(self, X):
+        prob=np.column_stack([
+            model.predict_proba(X)[:, 1]
+        ])
+        np.max(prob)
+        return predictions[prob.argmax(axis=0)]
+
+
 svm_model=SVC(probability=True).fit(X_train,y_train)
 # Make a prediction for the test set
 y_test = svm_model.predict_proba(X_test)[:, 1]
@@ -663,59 +710,12 @@ y_test = svm_model.predict_proba(X_test)[:, 1]
 # Write it to the submission file
 write_to_submission_file(y_test, 'baseline_5.csv')
 
-
-# In[ ]:
-
-#
-# class StackingAveragedModels(BaseEstimator, RegressorMixin, TransformerMixin):
-#     def __init__(self, base_models, meta_model, n_folds=5):
-#         self.base_models = base_models
-#         self.meta_model = meta_model
-#         self.n_folds = n_folds
-#
-#     # We again fit the data on clones of the original models
-#     def fit(self, X, y):
-#         self.base_models_ = [list() for x in self.base_models]
-#         self.meta_model_ = clone(self.meta_model)
-#         kfold = KFold(n_splits=self.n_folds, shuffle=True, random_state=156)
-#
-#         # Train cloned base models then create out-of-fold predictions
-#         # that are needed to train the cloned meta-model
-#         out_of_fold_predictions = np.zeros((X.shape[0], len(self.base_models)))
-#         for i, model in enumerate(self.base_models):
-#             for train_index, holdout_index in kfold.split(X, y):
-#                 instance = clone(model)
-#                 self.base_models_[i].append(instance)
-#                 instance.fit(X[train_index], y[train_index])
-#                 y_pred = instance.predict(X[holdout_index])
-#                 out_of_fold_predictions[holdout_index, i] = y_pred
-#
-#         # Now train the cloned  meta-model using the out-of-fold predictions as new feature
-#         self.meta_model_.fit(out_of_fold_predictions, y)
-#         return self
-#
-#     #Do the predictions of all base models on the test data and use the averaged predictions as
-#     #meta-features for the final prediction which is done by the meta-model
-#     def predict(self, X):
-#         meta_features = np.column_stack([
-#             np.column_stack([model.predict(X) for model in base_models]).mean(axis=1)
-#             for base_models in self.base_models_ ])
-#         return self.meta_model_.predict(meta_features)
 #
 #
 # # In[ ]:
 #
 #
-# from sklearn.linear_model import ElasticNet, Lasso,  BayesianRidge, LassoLarsIC
-# from sklearn.ensemble import RandomForestRegressor,  GradientBoostingRegressor
-# from sklearn.kernel_ridge import KernelRidge
-# from sklearn.pipeline import make_pipeline
-# from sklearn.preprocessing import RobustScaler
-# from sklearn.base import BaseEstimator, TransformerMixin, RegressorMixin, clone
-# from sklearn.model_selection import KFold, cross_val_score, train_test_split
-# from sklearn.metrics import mean_squared_error
-# import xgboost as xgb
-# import lightgbm as lgb
+
 #
 #
 # # In[ ]:
