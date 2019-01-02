@@ -17,7 +17,8 @@
    "cell_type": "code",
    "execution_count": 59,
    "metadata": {
-    "_uuid": "b486c4beb6f64fbeb70610a0e5ed7145256605e1"
+    "_uuid": "b486c4beb6f64fbeb70610a0e5ed7145256605e1",
+    "collapsed": true
    },
    "outputs": [],
    "source": [
@@ -38,7 +39,8 @@
    "cell_type": "code",
    "execution_count": 2,
    "metadata": {
-    "_uuid": "2e7833f60e9392ba0526aec5b68ea8587ce90274"
+    "_uuid": "2e7833f60e9392ba0526aec5b68ea8587ce90274",
+    "collapsed": true
    },
    "outputs": [],
    "source": [
@@ -50,7 +52,8 @@
    "cell_type": "code",
    "execution_count": 3,
    "metadata": {
-    "_uuid": "c02aa9ea53a2733cd5683bd10beed2b561acf7bb"
+    "_uuid": "c02aa9ea53a2733cd5683bd10beed2b561acf7bb",
+    "collapsed": false
    },
    "outputs": [
     {
@@ -179,7 +182,8 @@
    "cell_type": "code",
    "execution_count": 4,
    "metadata": {
-    "_uuid": "4a0f1e18cc9b10cfd4f098183511f21722e61752"
+    "_uuid": "4a0f1e18cc9b10cfd4f098183511f21722e61752",
+    "collapsed": false
    },
    "outputs": [
     {
@@ -320,7 +324,12 @@
    "cell_type": "code",
    "execution_count": 15,
    "metadata": {
+<<<<<<< HEAD
+    "_uuid": "4d27fbb1636578833b32628ab40c77b6cb13564e",
+    "collapsed": false
+=======
     "_uuid": "309be359915c00cbad41384a08926ddf25d47c7b"
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    },
    "outputs": [
     {
@@ -348,7 +357,12 @@
    "cell_type": "code",
    "execution_count": 16,
    "metadata": {
+<<<<<<< HEAD
+    "_uuid": "ed9e095279f1033f927b3750567051268d05987d",
+    "collapsed": true
+=======
     "_uuid": "082bfede543f62192c55146294cdb23b3b898c90"
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    },
    "outputs": [],
    "source": [
@@ -362,8 +376,16 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 117,
+   "metadata": {
+    "_uuid": "5bac98797b2bfb23851d735ec3761fc0e1401e61",
+    "collapsed": true
+   },
+=======
    "execution_count": 32,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [],
    "source": [
     "from sklearn.preprocessing import OneHotEncoder\n",
@@ -379,7 +401,50 @@
     "X_train_num_norm=scaler.fit_transform(X_train_num)\n",
     "X_test_num_norm=scaler.transform(X_test_num)\n",
     "\n",
+<<<<<<< HEAD
+    "# X_train_part, X_valid, y_train_part, y_valid = \\\n",
+    "#     train_test_split(X_train, y_train, \n",
+    "#                      test_size=0.3, random_state=17)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "_uuid": "11a40f5b7c0403853ce36618d97683bec6faff12",
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "logit_pipe = Pipeline([('scaler', StandardScaler()),\n",
+    "                       ('logit', LogisticRegression(C=1, random_state=17, solver='liblinear'))])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "_uuid": "309be359915c00cbad41384a08926ddf25d47c7b",
+    "collapsed": false
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.6991062491760075"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "logit_pipe.fit(X_train_part, y_train_part)\n",
+    "logit_valid_pred = logit_pipe.predict_proba(X_valid)[:, 1]\n",
+=======
     "X_train, y_train = np.hstack([X_train_onehot.toarray(),X_train_num_norm]), train_df['dep_delayed_15min'].map({'Y': 1, 'N': 0}).values\n",
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
     "\n",
     "X_test_onehot = onehot.transform(test_df[cat_cols])\n",
     "X_test = np.hstack([X_test_onehot.toarray(),X_test_num_norm])\n"
@@ -398,8 +463,15 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 35,
+   "metadata": {
+    "collapsed": true
+   },
+=======
    "execution_count": 21,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [],
    "source": [
     "from sklearn.ensemble import RandomForestClassifier"
@@ -407,8 +479,15 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 36,
+   "metadata": {
+    "collapsed": true
+   },
+=======
    "execution_count": 22,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [],
    "source": [
     "rf_clf = RandomForestClassifier(n_estimators=1000,verbose=1,oob_score=True,n_jobs=-1)"
@@ -416,8 +495,15 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 37,
+   "metadata": {
+    "collapsed": false
+   },
+=======
    "execution_count": 23,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [
     {
      "name": "stderr",
@@ -453,8 +539,15 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 109,
+   "metadata": {
+    "collapsed": false
+   },
+=======
    "execution_count": 24,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [
     {
      "data": {
@@ -473,8 +566,15 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 110,
+   "metadata": {
+    "collapsed": false
+   },
+=======
    "execution_count": 25,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [
     {
      "name": "stderr",
@@ -507,8 +607,15 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 122,
+   "metadata": {
+    "collapsed": false
+   },
+=======
    "execution_count": 33,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [
     {
      "name": "stderr",
@@ -534,8 +641,37 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 111,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.decomposition import PCA"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 112,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "pca = PCA(n_components=0.9)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 118,
+   "metadata": {
+    "collapsed": true
+   },
+=======
    "execution_count": 35,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [],
    "source": [
     "length = len(rf_clf.feature_importances_)\n",
@@ -549,8 +685,15 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 119,
+   "metadata": {
+    "collapsed": false
+   },
+=======
    "execution_count": 36,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [
     {
      "name": "stderr",
@@ -587,8 +730,29 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 120,
+   "metadata": {
+    "collapsed": true,
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "X_train_part_pca, X_valid_pca, y_train_part_pca, y_valid_pca = \\\n",
+    "    train_test_split(X_train_pca, y_train, \n",
+    "                     test_size=0.3, random_state=17)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 121,
+   "metadata": {
+    "collapsed": false
+   },
+=======
    "execution_count": 38,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [
     {
      "name": "stdout",
@@ -629,8 +793,15 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 124,
+   "metadata": {
+    "collapsed": false
+   },
+=======
    "execution_count": 39,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [
     {
      "name": "stderr",
@@ -671,8 +842,15 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": null,
+   "metadata": {
+    "collapsed": true
+   },
+=======
    "execution_count": 43,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [],
    "source": [
     "xgb_clf = xgb.XGBClassifier(n_estimators=1000,learning_rate=0.1)"
@@ -680,8 +858,15 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 40,
+   "metadata": {
+    "collapsed": false
+   },
+=======
    "execution_count": 44,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [
     {
      "data": {
@@ -705,8 +890,15 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 43,
+   "metadata": {
+    "collapsed": false
+   },
+=======
    "execution_count": 46,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [
     {
      "name": "stdout",
@@ -754,6 +946,12 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": 42,
+   "metadata": {
+    "collapsed": false
+   },
+=======
    "execution_count": 62,
    "metadata": {},
    "outputs": [],
@@ -790,6 +988,7 @@
    "cell_type": "code",
    "execution_count": 64,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [
     {
      "name": "stdout",
@@ -832,8 +1031,15 @@
   },
   {
    "cell_type": "code",
+<<<<<<< HEAD
+   "execution_count": null,
+   "metadata": {
+    "collapsed": false
+   },
+=======
    "execution_count": 67,
    "metadata": {},
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    "outputs": [
     {
      "name": "stdout",
@@ -850,7 +1056,27 @@
       "[Parallel(n_jobs=-1)]: Done  42 tasks      | elapsed: 41.8min\n",
       "[Parallel(n_jobs=-1)]: Done  60 out of  60 | elapsed: 67.5min finished\n"
      ]
+<<<<<<< HEAD
+    }
+   ],
+   "source": [
+    "rf_clf_pca = RandomForestClassifier(max_depth=14,verbose=1,oob_score=True,n_jobs=-1)\n",
+    "param={'n_estimators':range(100,1000,50)}\n",
+    "\n",
+    "gs2=GridSearchCV(rf_clf_pca,param_grid=param,cv=5,n_jobs=-1,scoring='roc_auc',verbose=1)\n",
+    "gs2.fit(X_train_part_pca,y_train_part_pca)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {
+    "collapsed": false
+   },
+   "outputs": [
+=======
     },
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
     {
      "data": {
       "text/plain": [
@@ -873,6 +1099,46 @@
     }
    ],
    "source": [
+<<<<<<< HEAD
+    "print(X_train_onehot.shape)\n",
+    "print(X_train_part_pca.shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.datasets import load_boston\n",
+    "data=load_boston()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "X,y=data['data'],data['target']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "collapsed": true
+   },
+   "outputs": [],
+   "source": [
+    "from sklearn.model_selection import train_test_split\n",
+    "\n",
+    "X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=.3,random_state=42)"
+=======
     "from sklearn.model_selection import GridSearchCV\n",
     "param1={'max_depth':range(3,10,2),'min_child_weight':range(1,6,2)}\n",
     "xgb2 = xgb.XGBClassifier(\n",
@@ -889,6 +1155,7 @@
     " seed=27)\n",
     "gSearch1=GridSearchCV(xgb2,param_grid=param1,cv=5,scoring='roc_auc',n_jobs=-1,verbose=1)\n",
     "gSearch1.fit(X_train_part_imp, y_train_part)"
+>>>>>>> b7ada0b1c84e674adf92e3d439dfbd0892d85c6b
    ]
   },
   {
@@ -930,7 +1197,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.6.4"
+   "version": "3.7.1"
   }
  },
  "nbformat": 4,
