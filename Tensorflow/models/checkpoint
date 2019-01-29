@@ -1,3 +1,0 @@
-model_checkpoint_path: "lm_final.ckpt"
-all_model_checkpoint_paths: "lm.ckpt"
-all_model_checkpoint_paths: "lm_final.ckpt"

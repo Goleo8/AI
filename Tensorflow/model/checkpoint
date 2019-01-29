@@ -1,3 +1,0 @@
-model_checkpoint_path: "logit_final.ckpt"
-all_model_checkpoint_paths: "logit.ckpt"
-all_model_checkpoint_paths: "logit_final.ckpt"
